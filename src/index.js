@@ -1,9 +1,18 @@
 const express = require('express');
+const { rateLimit } = require('express-rate-limit');
 
 const { ServerConfig } = require('./config');
 const apiRoutes = require('./routes');
 
 const app = express();
+
+const limiter = rateLimit({
+    windowMs: 2 * 60 * 1000, /* 2 minutes = 3 request ==*/
+    limit: 3,
+    message: { error: 'Too many requests, please try again later.' },
+});
+
+app.use(limiter);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
