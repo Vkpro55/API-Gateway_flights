@@ -45,7 +45,6 @@ const checkAuth = async (req, res, next) => {
         }
 
     } catch (error) {
-        console.log("From Middleware", error);
         return res
             .status(error.statusCode)
             .json(error);

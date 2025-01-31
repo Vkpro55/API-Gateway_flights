@@ -59,12 +59,12 @@ async function isAuthenticated(token) {
         }
         return user.id;
     } catch (error) {
-
-        console.log("From Service", error);
-
         if (error instanceof AppError) throw error;
         if (error.name == 'JsonWebTokenError') {
             throw new AppError('Invalid JWT token', StatusCodes.BAD_REQUEST);
+        }
+        if (error.name == 'TokenExpiredError') {
+            throw new AppError('JWT token expired', StatusCodes.BAD_REQUEST);
         }
         console.log(error);
         throw new AppError('Something went wrong', StatusCodes.INTERNAL_SERVER_ERROR);
