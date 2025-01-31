@@ -1,6 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 const AppError = require("../utils/errors/app-error");
 const { ErrorResponse } = require("../utils/common");
+const { UserService } = require("../services");
 
 
 const validateAuthRequest = (req, res, next) => {
@@ -35,6 +36,23 @@ const validateAuthRequest = (req, res, next) => {
     next();
 }
 
+const checkAuth = async (req, res, next) => {
+    try {
+        const response = await UserService.isAuthenticated(req.headers['x-access-token']);
+        if (response) {
+            req.user = response; /*== This will indicate down the API's that request is authenticated and this user is authenticated user ==*/
+            next();
+        }
+
+    } catch (error) {
+        console.log("From Middleware", error);
+        return res
+            .status(error.statusCode)
+            .json(error);
+    }
+}
+
 module.exports = {
-    validateAuthRequest
+    validateAuthRequest,
+    checkAuth
 }
