@@ -51,7 +51,18 @@ const checkAuth = async (req, res, next) => {
     }
 }
 
+const isAdmin = async (req, res, next) => {
+    const response = await UserService.isAdmin(req.user);
+    if (!response) {
+        return res
+            .status(StatusCodes.UNAUTHORIZED)
+            .json({ message: "User not found for this action" })
+    }
+    next();
+}
+
 module.exports = {
     validateAuthRequest,
-    checkAuth
+    checkAuth,
+    isAdmin
 }

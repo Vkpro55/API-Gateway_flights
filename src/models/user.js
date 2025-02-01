@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.belongsToMany(models.Role, {
         through: 'User_Roles',
-        as: 'role'
+        as: 'role',
+        onDelete: 'CASCADE'
       });
     }
 
@@ -53,6 +54,5 @@ module.exports = (sequelize, DataTypes) => {
 
   return User;
 };
-
 
 

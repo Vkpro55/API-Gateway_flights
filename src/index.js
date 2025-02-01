@@ -2,7 +2,6 @@ const express = require('express');
 const { rateLimit } = require('express-rate-limit');
 
 const proxy = require('express-http-proxy');
-const { User, Role } = require("./models");
 
 const { ServerConfig } = require('./config');
 const apiRoutes = require('./routes');
@@ -31,22 +30,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', apiRoutes);
 
-app.listen(ServerConfig.PORT, async () => {
+app.listen(ServerConfig.PORT, () => {
     console.log(`Successfully started the server on PORT : ${ServerConfig.PORT}`);
-
-    // let user = await User.findByPk(2);
-    // let role = await Role.findByPk(2);
-
-    // user.addRole(role);
-
-    // console.log("User is:", user);
-    // console.log("Role is:", role);
 });
-
-/**
- * user
- *  |
- *  localhost:5000 => API Gateway
- *  |
- * localhost:3000/api/v1/flights
- */
