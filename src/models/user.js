@@ -11,9 +11,9 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       this.belongsToMany(models.Role, {
-        through: "User_Role",
-        as: "role"
-      })
+        through: 'User_Roles',
+        as: 'role'
+      });
     }
 
   }
@@ -53,3 +53,6 @@ module.exports = (sequelize, DataTypes) => {
 
   return User;
 };
+
+
+

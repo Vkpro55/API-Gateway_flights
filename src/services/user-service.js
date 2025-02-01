@@ -1,15 +1,23 @@
 
 const { StatusCodes } = require("http-status-codes");
-const { UserRepository } = require("../repositories");
+const { UserRepository, RoleRepostory } = require("../repositories");
 const AppError = require("../utils/errors/app-error");
 const { Auth } = require("../utils/helper");
+const RoleRepository = require("../repositories/role-repository");
+const { Enums } = require("../utils/common");
+const { CUSTOMER } = Enums.USER_ROLES;
 
 const userRepository = new UserRepository();
+const roleRepostory = new RoleRepository();
 
 
 async function create(data) {
     try {
         const user = await userRepository.create(data);
+        const role = await roleRepostory.getRoleByName(CUSTOMER);
+
+        user.addRole(role);
+
         return user;
     } catch (error) {
         if (error.name === "SequelizeValidationError" || error.name === "SequelizeUniqueConstraintError") {
@@ -19,6 +27,8 @@ async function create(data) {
             });
             throw new AppError(explanation, StatusCodes.BAD_REQUEST);
         }
+
+        console.log("Error is: ", error);
         throw new AppError("Cannot create a new User object", StatusCodes.INTERNAL_SERVER_ERROR);
     }
 }

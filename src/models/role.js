@@ -3,24 +3,26 @@ const {
   Model
 } = require('sequelize');
 
-const { Enums } = require("../utils/common");
-const { ADMIN, CUSTOMER, FLIGHT_COMAPANY } = Enums.USER_ROLES;
-
+const { Enums } = require('../utils/common');
+const { ADMIN, CUSTOMER, FLIGHT_COMPANY } = Enums.USER_ROLES;
 module.exports = (sequelize, DataTypes) => {
   class Role extends Model {
+
     static associate(models) {
+
       this.belongsToMany(models.User, {
-        through: "User_Role",
-        as: "user"
-      })
+        through: 'User_Roles',
+        as: 'user'
+      });
     }
   }
   Role.init({
     name: {
-      type: DataTypes.ENUM,
-      values: [ADMIN, CUSTOMER, FLIGHT_COMAPANY],
-      defaultValue: CUSTOMER,
-      allowNull: false
+      type: DataTypes.ENUM({
+        values: [ADMIN, CUSTOMER, FLIGHT_COMPANY]
+      }),
+      allowNull: false,
+      defaultValue: CUSTOMER
     }
   }, {
     sequelize,
@@ -28,5 +30,3 @@ module.exports = (sequelize, DataTypes) => {
   });
   return Role;
 };
-
-
