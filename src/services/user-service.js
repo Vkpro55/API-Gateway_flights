@@ -80,8 +80,6 @@ async function isAuthenticated(token) {
     }
 }
 
-
-
 async function addRoletoUser(data) {
     try {
         const user = await userRepository.get(data.userId);
